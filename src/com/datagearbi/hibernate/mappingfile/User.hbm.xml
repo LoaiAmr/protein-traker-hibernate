@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 16, 2020, 1:48:40 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="com.datagearbi.hibernate.model.User" table="USERS">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="java.lang.String">
+			<column name="NAME" />
+		</property>
+		<!-- <component name="ProteinData"> <property name="total" type="int"> 
+			<column name="TOTAL" /> </property> <property name="goal" type="int"> <column 
+			name="GOAL" /> </property> </component> -->
+		<!-- <collection-id type="int" column="ID"> <generator class="increment" 
+			/> </collection-id> -->
+		<!-- <map-key column="ENTRY_IDENTIFIER" type="string"/> -->
+
+		<!-- <one-to-one name="proteinData" class="com.datagearbi.hibernate.model.ProteinData" 
+			cascade="save-update" /> -->
+
+		<many-to-one name="proteinData"
+			class="com.datagearbi.hibernate.model.ProteinData"
+			column="PROTEIN_DATA_ID" cascade="save-update" unique="true" />
+
+		<list name="history" table="USER" inverse="true"
+			cascade="save-update">
+			<key column="USER_ID" />
+			<list-index column="Type"></list-index>
+			<one-to-many
+				class="com.datagearbi.hibernate.model.UserHistory" />
+		</list>
+
+		<!-- <join table="USER_GOALALERT" optional="true"> <key column="USER_ID" 
+			/> <many-to-one name="goalAlert" column="GOALALERT_ID" not-null="true" unique="true" 
+			cascade="save-update" /> </join> -->
+
+		<set name="goalAlert" table="USER_GOALALERT" cascade="save-update">
+			<key column="USER_ID" />
+			<many-to-many
+				class="com.datagearbi.hibernate.model.GoalAlert"
+				column="GOALALERT_ID" />
+		</set>
+
+
+	</class>
+</hibernate-mapping>
